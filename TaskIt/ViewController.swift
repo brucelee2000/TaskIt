@@ -51,6 +51,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /* Segue: Preparation
+    *  Notify the view controller that a segue is about to perform
+    *  - called right before desitination view controller appears on the screen
+    *  - used to transfer data to destination view controller from current view controller
+    */
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "showTaskDetail" {
+            let detailVC:TaskDetailViewController = segue.destinationViewController as TaskDetailViewController
+            
+            // Locate selected row: use sender (since send is passed as self in performSegueWithIdentifier)
+            //let taskVC:ViewController = sender! as ViewController
+            //let indexPath = taskVC.tableView.indexPathForSelectedRow()
+            
+            // Locate selected row: use self
+            let indexPath = self.tableView.indexPathForSelectedRow()
+            
+            let thisTask = taskArrayStruct[indexPath!.row]
+            detailVC.detailTaskModel = thisTask
+        }
+    
+    }
 
     // +------      Protocal: UITableViewDataSource              ------+
     // +           Represents the data model object.                   +
@@ -105,6 +128,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // +---------------------------------------------------------------+
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println(indexPath.row)
+        
+        /* Segue: Initiation/Start
+        *  Initiate segue with specified identifier from view controller storyboard
+        */
+        performSegueWithIdentifier("showTaskDetail", sender: self)
         
     }
 }

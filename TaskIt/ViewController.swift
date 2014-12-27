@@ -12,7 +12,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet weak var tableView: UITableView!
     
-    var taskArray:[Dictionary<String,String>] = []
+    var taskArrayDict:[Dictionary<String,String>] = []
+    var taskArrayStruct:[TaskModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +33,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         println(task1["subtask"])
         println(task1["date"])
         
-        taskArray = [task1, task2, task3]
+        taskArrayDict = [task1, task2, task3]
         
+        // Struct usage:
+        let taskA = TaskModel(task: "Study French", subtask: "Verbs", date: "01/01/2014")
+        let taskB = TaskModel(task: "Eat dinner", subtask: "Vegi", date: "11/21/2014")
+        let taskC = TaskModel(task: "Gym", subtask: "Bench press", date: "01/14/2014")
+        
+        taskArrayStruct = [taskA, taskB, taskC]
+
         // Reloads rows and sections in TableView
         self.tableView.reloadData()
 
@@ -58,7 +66,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         */
         
-        return taskArray.count
+        return taskArrayDict.count
     }
 
     // indexPath: encapsulate both rows and sections
@@ -66,14 +74,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         println("\(indexPath.row)")
         
-        let taskDict:Dictionary = taskArray[indexPath.row]
+        let taskDict:Dictionary = taskArrayDict[indexPath.row]
+        let taskStruct:TaskModel = taskArrayStruct[indexPath.row]
         
         // Returns a reusable cell object (located by its identifier)
         var cell:TaskCell = tableView.dequeueReusableCellWithIdentifier("myCell") as TaskCell
         
+        /*
         cell.taskLabel.text = taskDict["task"]
         cell.descriptionLabel.text = taskDict["subtask"]
         cell.dateLabel.text = taskDict["date"]
+        */
+        
+        cell.taskLabel.text = taskStruct.task
+        cell.descriptionLabel.text = taskStruct.subtask
+        cell.dateLabel.text = taskStruct.date
         
         // If there are multiple prototype cells
         if indexPath.row == 0 {

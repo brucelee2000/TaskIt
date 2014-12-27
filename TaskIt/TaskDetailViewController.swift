@@ -17,6 +17,14 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet weak var subtaskTextField: UITextField!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
     
+    @IBAction func cancelButtonPressed(sender: UIBarButtonItem) {
+        // Dismiss ViewController when navigation controller still exists
+        // - Segue is "Show"
+        // Pops the top view controller from the navigation stack and updates the display.
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -12,6 +12,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBAction func addButtonPressed(sender: UIBarButtonItem) {
+        self.performSegueWithIdentifier("showTaskAdd", sender: self)
+    }
+    
+    
     var taskArrayDict:[Dictionary<String,String>] = []
     var taskArrayStruct:[TaskModel] = []
     

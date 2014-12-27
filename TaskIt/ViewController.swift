@@ -26,9 +26,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // self.tableView.delegate = self
         
         // Dictionary usage:
-        let task1:Dictionary<String,String> = ["task":"Study French", "subtask":"Verbs", "date":"01/01/2014"]
-        let task2:Dictionary<String,String> = ["task":"Eat dinner", "subtask":"Vegi", "date":"11/21/2014"]
-        let task3:Dictionary<String,String> = ["task":"Gym", "subtask":"Bench press", "date":"01/14/2014"]
+        let task1:Dictionary<String,String> = ["task":"Study French", "subtask":"Verbs", "date":Date.toString(date:Date.from(year: 2014, month: 1, day: 1))]
+        let task2:Dictionary<String,String> = ["task":"Eat dinner", "subtask":"Vegi", "date":Date.toString(date:Date.from(year: 2014, month: 11, day: 21))]
+        let task3:Dictionary<String,String> = ["task":"Gym", "subtask":"Bench press", "date":Date.toString(date:Date.from(year: 2014, month: 1, day: 14))]
         println(task1["task"])
         println(task1["subtask"])
         println(task1["date"])
@@ -36,9 +36,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         taskArrayDict = [task1, task2, task3]
         
         // Struct usage:
-        let taskA = TaskModel(task: "Study French", subtask: "Verbs", date: "01/01/2014")
-        let taskB = TaskModel(task: "Eat dinner", subtask: "Vegi", date: "11/21/2014")
-        let taskC = TaskModel(task: "Gym", subtask: "Bench press", date: "01/14/2014")
+        let taskA = TaskModel(task: "Study French", subtask: "Verbs", date: Date.from(year: 2014, month: 1, day: 1))
+        let taskB = TaskModel(task: "Eat dinner", subtask: "Vegi", date: Date.from(year: 2014, month: 11, day: 21))
+        let taskC = TaskModel(task: "Gym", subtask: "Bench press", date: Date.from(year: 2014, month: 1, day: 14))
         
         taskArrayStruct = [taskA, taskB, taskC]
 
@@ -111,7 +111,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         cell.taskLabel.text = taskStruct.task
         cell.descriptionLabel.text = taskStruct.subtask
-        cell.dateLabel.text = taskStruct.date
+        cell.dateLabel.text = Date.toString(date: taskStruct.date)
         
         // If there are multiple prototype cells
         if indexPath.row == 0 {

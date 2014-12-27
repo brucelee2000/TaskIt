@@ -12,5 +12,5 @@ import UIKit
 struct TaskModel {
     var task:String
     var subtask:String
-    var date:String
+    var date:NSDate
 }

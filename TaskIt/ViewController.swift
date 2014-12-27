@@ -12,13 +12,31 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet weak var tableView: UITableView!
     
+    var taskArray:[Dictionary<String,String>] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        // Manually reference the protocal: Give the datasource/delegate the access to the ViewController
+        // Build the protocal references (allow protocals to access ViewController):
+        // - Method 1 in storyboard: Drag tableview onto the view controller and select datasource and delegate
+        // - Method 2 in codes:  see the codes below
         // self.tableView.dataSource = self
         // self.tableView.delegate = self
+        
+        // Dictionary usage:
+        let task1:Dictionary<String,String> = ["task":"Study French", "subtask":"Verbs", "date":"01/01/2014"]
+        let task2:Dictionary<String,String> = ["task":"Eat dinner", "subtask":"Vegi", "date":"11/21/2014"]
+        let task3:Dictionary<String,String> = ["task":"Gym", "subtask":"Bench press", "date":"01/14/2014"]
+        println(task1["task"])
+        println(task1["subtask"])
+        println(task1["date"])
+        
+        taskArray = [task1, task2, task3]
+        
+        // Reloads rows and sections in TableView
+        self.tableView.reloadData()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,13 +50,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // One tableview can have many sections, each of which can have multiple rows
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        /*
         if section == 0 {
             return 5
         } else {
             return 3
         }
+        */
         
-        //return 5
+        return taskArray.count
     }
 
     // indexPath: encapsulate both rows and sections
@@ -46,12 +66,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         println("\(indexPath.row)")
         
+        let taskDict:Dictionary = taskArray[indexPath.row]
+        
         // Returns a reusable cell object (located by its identifier)
         var cell:TaskCell = tableView.dequeueReusableCellWithIdentifier("myCell") as TaskCell
         
-        cell.taskLabel.text = "Study French"
-        cell.descriptionLabel.text = "Verbs in past and presence"
-        cell.dateLabel.text = "01/01/2014"
+        cell.taskLabel.text = taskDict["task"]
+        cell.descriptionLabel.text = taskDict["subtask"]
+        cell.dateLabel.text = taskDict["date"]
         
         // If there are multiple prototype cells
         if indexPath.row == 0 {

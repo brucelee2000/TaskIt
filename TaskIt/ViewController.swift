@@ -19,6 +19,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var taskArrayDict:[Dictionary<String,String>] = []
     var taskArrayStruct:[TaskModel] = []
+    var completedArray = [TaskModel(task: "Code", subtask: "Task Project", date: Date.from(year: 2014, month: 11, day: 21), isCompleted: true)]
+    
+    var baseArray:[[TaskModel]] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,20 +44,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         taskArrayDict = [task1, task2, task3]
         
         // Struct usage:
-        let taskA = TaskModel(task: "Study French", subtask: "Verbs", date: Date.from(year: 2014, month: 1, day: 1))
-        let taskB = TaskModel(task: "Eat dinner", subtask: "Vegi", date: Date.from(year: 2014, month: 11, day: 21))
-        let taskC = TaskModel(task: "Gym", subtask: "Bench press", date: Date.from(year: 2014, month: 1, day: 14))
+        let taskA = TaskModel(task: "Study French", subtask: "Verbs", date: Date.from(year: 2014, month: 1, day: 1), isCompleted: false)
+        let taskB = TaskModel(task: "Eat dinner", subtask: "Vegi", date: Date.from(year: 2014, month: 11, day: 21), isCompleted: false)
+        let taskC = TaskModel(task: "Gym", subtask: "Bench press", date: Date.from(year: 2014, month: 1, day: 14), isCompleted: false)
         
         taskArrayStruct = [taskA, taskB, taskC]
+        
+        baseArray = [taskArrayStruct, completedArray]
         
         // Use embedded function to sort
         func sortByDate(taskOne:TaskModel, taskTwo:TaskModel) -> Bool {
             return taskOne.date.timeIntervalSince1970 < taskTwo.date.timeIntervalSince1970
         }
-        taskArrayStruct = taskArrayStruct.sorted(sortByDate)
+        baseArray[0] = baseArray[0].sorted(sortByDate)
         
         // Use closure to sort
-        taskArrayStruct = taskArrayStruct.sorted({ (taskOne:TaskModel, taskTwo:TaskModel) -> Bool in
+        baseArray[0] = baseArray[0].sorted({ (taskOne:TaskModel, taskTwo:TaskModel) -> Bool in
             taskOne.date.timeIntervalSince1970 < taskTwo.date.timeIntervalSince1970
         })
 
@@ -95,7 +100,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // 2. Transfer data in main VC to target VC
-            let thisTask = taskArrayStruct[indexPath!.row]
+            let thisTask = baseArray[indexPath!.section][indexPath!.row]
             detailVC.detailTaskModel = thisTask
             
             // 3. Transfer main VC to target VC, so that target VC can access data in main VC
@@ -111,6 +116,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // +           Represents the data model object.                   +
     // +---------------------------------------------------------------+
     
+    // Return the number of sections in the table view
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return baseArray.count
+    }
+    
     // One tableview can have many sections, each of which can have multiple rows
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         /*
@@ -121,7 +131,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         */
         
-        return taskArrayStruct.count
+        return baseArray[section].count
     }
 
     // indexPath: encapsulate both rows and sections
@@ -132,7 +142,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /*
         let taskDict:Dictionary = taskArrayDict[indexPath.row]
         */
-        let taskStruct:TaskModel = taskArrayStruct[indexPath.row]
+        let taskStruct:TaskModel = baseArray[indexPath.section][indexPath.row]
         
         // Returns a reusable cell object (located by its identifier)
         var cell:TaskCell = tableView.dequeueReusableCellWithIdentifier("myCell") as TaskCell

@@ -10,9 +10,6 @@ import UIKit
 import CoreData
 
 class AddTaskViewController: UIViewController {
-
-    // Used to pass main ViewController so that this controller can access all the properties in main ViewController
-    var mainVC:ViewController!
     
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var subtaskTextField: UITextField!

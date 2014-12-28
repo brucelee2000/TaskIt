@@ -17,12 +17,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.performSegueWithIdentifier("showTaskAdd", sender: self)
     }
     
-    
+    /*
     var taskArrayDict:[Dictionary<String,String>] = []
     var taskArrayStruct:[TaskModel] = []
     var completedArray = [TaskModel(task: "Code", subtask: "Task Project", date: Date.from(year: 2014, month: 11, day: 21), isCompleted: true)]
     
     var baseArray:[[TaskModel]] = []
+    */
     
     let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext!
     var myFetchResultsController:NSFetchedResultsController = NSFetchedResultsController()
@@ -89,9 +90,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Function called when transition back to current ViewController from somewhere else
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Refresh data on this tableView
-        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -118,14 +116,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // 2. Transfer data in main VC to target VC
-            let thisTask = baseArray[indexPath!.section][indexPath!.row]
+            let thisTask = myFetchResultsController.objectAtIndexPath(indexPath!) as TaskModel
             detailVC.detailTaskModel = thisTask
             
-            // 3. Transfer main VC to target VC, so that target VC can access data in main VC
-            detailVC.mainVC = self
         } else if segue.identifier == "showTaskAdd" {
             let addTaskVC:AddTaskViewController = segue.destinationViewController as AddTaskViewController
-            addTaskVC.mainVC = self
         }
     
     }
@@ -136,7 +131,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Return the number of sections in the table view
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return baseArray.count
+        return myFetchResultsController.sections!.count
     }
     
     // One tableview can have many sections, each of which can have multiple rows
@@ -149,7 +144,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         */
         
-        return baseArray[section].count
+        return myFetchResultsController.sections![section].numberOfObjects
     }
 
     // indexPath: encapsulate both rows and sections
@@ -160,7 +155,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /*
         let taskDict:Dictionary = taskArrayDict[indexPath.row]
         */
-        let taskStruct:TaskModel = baseArray[indexPath.section][indexPath.row]
+        let taskStruct:TaskModel = myFetchResultsController.objectAtIndexPath(indexPath) as TaskModel
         
         // Returns a reusable cell object (located by its identifier)
         var cell:TaskCell = tableView.dequeueReusableCellWithIdentifier("myCell") as TaskCell
@@ -217,23 +212,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Asks the data source to commit the insertion or deletion of a specified row in the receiver.
     // aka. Add "Swipe" function and its action for the cell in tableView.
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        let thisTask = baseArray[indexPath.section][indexPath.row]
+        let thisTask = myFetchResultsController.objectAtIndexPath(indexPath) as TaskModel
         
         if indexPath.section == 0 {
-            var newTask = TaskModel(task: thisTask.task, subtask: thisTask.subtask, date: thisTask.date, isCompleted: true)
-            baseArray[1].append(newTask)
+            thisTask.isCompleted = true
         } else {
-            var newTask = TaskModel(task: thisTask.task, subtask: thisTask.subtask, date: thisTask.date, isCompleted: false)
-            baseArray[0].append(newTask)
+            thisTask.isCompleted = false
         }
         
-        baseArray[indexPath.section].removeAtIndex(indexPath.row)
-        
-        // Use closure to sort
-        baseArray[0] = baseArray[0].sorted({ (taskOne:TaskModel, taskTwo:TaskModel) -> Bool in
-            taskOne.date.timeIntervalSince1970 < taskTwo.date.timeIntervalSince1970
-        })
-        
+        (UIApplication.sharedApplication().delegate as AppDelegate).saveContext()
+    }
+    
+    // Notifies the receiver that the fetched results controller has completed processing of one or more changes due to an add, remove, move, or update.
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.reloadData()
     }
     
@@ -241,14 +232,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func taskFetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "TaskModel")
         let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        let completedDescriptor = NSSortDescriptor(key: "isCompleted", ascending: true)
         // The array here means multiple sortdescriptor is allowed, here we only do date
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.sortDescriptors = [completedDescriptor, sortDescriptor]
         
         return fetchRequest
     }
     
     func getFetchedResultsController() -> NSFetchedResultsController {
-        var fetchResultsController = NSFetchedResultsController(fetchRequest: taskFetchRequest(), managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        // "sectionNameKeyPath" determines the number of sections in tableView
+        var fetchResultsController = NSFetchedResultsController(fetchRequest: taskFetchRequest(), managedObjectContext: managedObjectContext, sectionNameKeyPath: "isCompleted", cacheName: nil)
         
         return fetchResultsController
     }

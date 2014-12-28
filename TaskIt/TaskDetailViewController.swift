@@ -13,9 +13,6 @@ class TaskDetailViewController: UIViewController {
     // Variable to save data transferred from other ViewController
     var detailTaskModel:TaskModel!
     
-    // Variable to transfer back to main ViewController
-    var mainVC:ViewController!
-    
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var subtaskTextField: UITextField!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
@@ -28,8 +25,13 @@ class TaskDetailViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
-        var task = TaskModel(task: taskTextField.text, subtask: subtaskTextField.text, date: dueDatePicker.date, isCompleted: false)
-        mainVC.baseArray[mainVC.tableView.indexPathForSelectedRow()!.section][mainVC.tableView.indexPathForSelectedRow()!.row] = task
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        detailTaskModel.task = taskTextField.text
+        detailTaskModel.subtask = subtaskTextField.text
+        detailTaskModel.date = dueDatePicker.date
+        detailTaskModel.isCompleted = detailTaskModel.isCompleted
+        
+        appDelegate.saveContext()
         
         self.navigationController?.popViewControllerAnimated(true)
     }

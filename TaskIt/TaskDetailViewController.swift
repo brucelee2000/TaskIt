@@ -13,6 +13,9 @@ class TaskDetailViewController: UIViewController {
     // Variable to save data transferred from other ViewController
     var detailTaskModel:TaskModel!
     
+    // Variable to transfer back to main ViewController
+    var mainVC:ViewController!
+    
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var subtaskTextField: UITextField!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
@@ -21,6 +24,13 @@ class TaskDetailViewController: UIViewController {
         // Dismiss ViewController when navigation controller still exists
         // - Segue is "Show"
         // Pops the top view controller from the navigation stack and updates the display.
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
+        var task = TaskModel(task: taskTextField.text, subtask: subtaskTextField.text, date: dueDatePicker.date)
+        mainVC.taskArrayStruct[mainVC.tableView.indexPathForSelectedRow()!.row] = task
+        
         self.navigationController?.popViewControllerAnimated(true)
     }
     

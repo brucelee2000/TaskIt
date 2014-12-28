@@ -73,6 +73,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "showTaskDetail" {
+            // 1. Make target VC available for main VC
             let detailVC:TaskDetailViewController = segue.destinationViewController as TaskDetailViewController
             
             // Locate selected row: use sender (since send is passed as self in performSegueWithIdentifier)
@@ -82,8 +83,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             // Locate selected row: use self
             let indexPath = self.tableView.indexPathForSelectedRow()
             
+            // 2. Transfer data in main VC to target VC
             let thisTask = taskArrayStruct[indexPath!.row]
             detailVC.detailTaskModel = thisTask
+            
+            // 3. Transfer main VC to target VC, so that target VC can access data in main VC
+            detailVC.mainVC = self
         } else if segue.identifier == "showTaskAdd" {
             let addTaskVC:AddTaskViewController = segue.destinationViewController as AddTaskViewController
             addTaskVC.mainVC = self

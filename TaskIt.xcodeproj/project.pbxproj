@@ -18,6 +18,7 @@
 		A76B36CD1A4E6EBB006895A5 /* TaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76B36CC1A4E6EBB006895A5 /* TaskDetailViewController.swift */; };
 		A76B36CF1A4E85D8006895A5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76B36CE1A4E85D8006895A5 /* Date.swift */; };
 		A76B36D11A4E8BCE006895A5 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76B36D01A4E8BCE006895A5 /* AddTaskViewController.swift */; };
+		A7D1BF271A4FC7E4000A9AE8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D1BF261A4FC7E4000A9AE8 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		A76B36CC1A4E6EBB006895A5 /* TaskDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailViewController.swift; sourceTree = "<group>"; };
 		A76B36CE1A4E85D8006895A5 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		A76B36D01A4E8BCE006895A5 /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
+		A7D1BF261A4FC7E4000A9AE8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7D1BF271A4FC7E4000A9AE8 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +72,7 @@
 		A76B369A1A4E3E90006895A5 = {
 			isa = PBXGroup;
 			children = (
+				A7D1BF261A4FC7E4000A9AE8 /* CoreData.framework */,
 				A76B36A51A4E3E90006895A5 /* TaskIt */,
 				A76B36BB1A4E3E90006895A5 /* TaskItTests */,
 				A76B36A41A4E3E90006895A5 /* Products */,
@@ -427,6 +431,7 @@
 				A76B36C41A4E3E90006895A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A76B36C51A4E3E90006895A5 /* Build configuration list for PBXNativeTarget "TaskItTests" */ = {
 			isa = XCConfigurationList;
@@ -435,6 +440,7 @@
 				A76B36C71A4E3E90006895A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

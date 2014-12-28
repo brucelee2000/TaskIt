@@ -10,6 +10,13 @@ import UIKit
 
 class AddTaskViewController: UIViewController {
 
+    // Used to pass main ViewController so that this controller can access all the properties in main ViewController
+    var mainVC:ViewController!
+    
+    @IBOutlet weak var taskTextField: UITextField!
+    @IBOutlet weak var subtaskTextField: UITextField!
+    @IBOutlet weak var dueDatePicker: UIDatePicker!
+    
     
     @IBAction func cancelButtonPressed(sender: UIButton) {
         // Dismiss ViewController when there's no navigation controller
@@ -17,6 +24,11 @@ class AddTaskViewController: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func addTaskButtonPressed(sender: UIButton) {
+        var task = TaskModel(task: taskTextField.text, subtask: subtaskTextField.text, date: dueDatePicker.date)
+        mainVC.taskArrayStruct.append(task)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     
     override func viewDidLoad() {

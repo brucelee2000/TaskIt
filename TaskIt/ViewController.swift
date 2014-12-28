@@ -46,6 +46,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let taskC = TaskModel(task: "Gym", subtask: "Bench press", date: Date.from(year: 2014, month: 1, day: 14))
         
         taskArrayStruct = [taskA, taskB, taskC]
+        
+        // Use embedded function to sort
+        func sortByDate(taskOne:TaskModel, taskTwo:TaskModel) -> Bool {
+            return taskOne.date.timeIntervalSince1970 < taskTwo.date.timeIntervalSince1970
+        }
+        taskArrayStruct = taskArrayStruct.sorted(sortByDate)
+        
+        // Use closure to sort
+        taskArrayStruct = taskArrayStruct.sorted({ (taskOne:TaskModel, taskTwo:TaskModel) -> Bool in
+            taskOne.date.timeIntervalSince1970 < taskTwo.date.timeIntervalSince1970
+        })
 
         // Reloads rows and sections in TableView
         self.tableView.reloadData()
@@ -159,5 +170,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         performSegueWithIdentifier("showTaskDetail", sender: self)
         
     }
+    
+
+    
 }
 

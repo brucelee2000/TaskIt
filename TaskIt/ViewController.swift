@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -24,10 +24,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var baseArray:[[TaskModel]] = []
     
+    let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext!
+    var myFetchResultsController:NSFetchedResultsController = NSFetchedResultsController()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        /*
+
         // Build the protocal references (allow protocals to access ViewController):
         // - Method 1 in storyboard: Drag tableview onto the view controller and select datasource and delegate
         // - Method 2 in codes:  see the codes below
@@ -66,6 +72,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         // Reloads rows and sections in TableView
         self.tableView.reloadData()
+
+        */
+        
+        // Setup data fetch method from CoreData
+        myFetchResultsController = getFetchedResultsController()
+        
+        // Give the access of this VC to myFetchResultsController
+        myFetchResultsController.delegate = self
+        
+        // Fetch the data
+        myFetchResultsController.performFetch(nil)
 
     }
     
@@ -218,6 +235,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         })
         
         tableView.reloadData()
+    }
+    
+    // Helper
+    func taskFetchRequest() -> NSFetchRequest {
+        let fetchRequest = NSFetchRequest(entityName: "TaskModel")
+        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        // The array here means multiple sortdescriptor is allowed, here we only do date
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        return fetchRequest
+    }
+    
+    func getFetchedResultsController() -> NSFetchedResultsController {
+        var fetchResultsController = NSFetchedResultsController(fetchRequest: taskFetchRequest(), managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        return fetchResultsController
     }
 }
 

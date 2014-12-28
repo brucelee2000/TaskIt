@@ -171,6 +171,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // +       Represents the display and behaviour of the cells       +
     // +---------------------------------------------------------------+
     
+    // Tells the delegate that the specified row is now selected.
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         println(indexPath.row)
         
@@ -181,7 +182,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-
+    // Asks the delegate for the height to use for the header of a particular section: set section header height
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 25
+    }
+    
+    // Asks the data source for the title of the header of the specified section of the table view: set section header title
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "To do"
+        } else {
+            return "Completed"
+        }
+    }
     
 }
 

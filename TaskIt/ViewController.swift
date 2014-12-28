@@ -202,7 +202,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Asks the data source for the title of the header of the specified section of the table view: set section header title
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
+        let mytask = myFetchResultsController.sections![section].objects[0] as TaskModel
+        if (section == 0) && (mytask.isCompleted == false) {
             return "To do"
         } else {
             return "Completed"
@@ -214,7 +215,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         let thisTask = myFetchResultsController.objectAtIndexPath(indexPath) as TaskModel
         
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && (thisTask.isCompleted == false) {
             thisTask.isCompleted = true
         } else {
             thisTask.isCompleted = false

@@ -196,5 +196,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    // Asks the data source to commit the insertion or deletion of a specified row in the receiver.
+    // aka. Add "Swipe" function and its action for the cell in tableView.
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        let thisTask = baseArray[indexPath.section][indexPath.row]
+        
+        if indexPath.section == 0 {
+            var newTask = TaskModel(task: thisTask.task, subtask: thisTask.subtask, date: thisTask.date, isCompleted: true)
+            baseArray[1].append(newTask)
+        } else {
+            var newTask = TaskModel(task: thisTask.task, subtask: thisTask.subtask, date: thisTask.date, isCompleted: false)
+            baseArray[0].append(newTask)
+        }
+        
+        baseArray[indexPath.section].removeAtIndex(indexPath.row)
+        
+        // Use closure to sort
+        baseArray[0] = baseArray[0].sorted({ (taskOne:TaskModel, taskTwo:TaskModel) -> Bool in
+            taskOne.date.timeIntervalSince1970 < taskTwo.date.timeIntervalSince1970
+        })
+        
+        tableView.reloadData()
+    }
 }
 

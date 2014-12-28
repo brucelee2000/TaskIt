@@ -51,6 +51,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.tableView.reloadData()
 
     }
+    
+    // Function called when transition back to current ViewController from somewhere else
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Refresh data on this tableView
+        self.tableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -97,7 +105,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         */
         
-        return taskArrayDict.count
+        return taskArrayStruct.count
     }
 
     // indexPath: encapsulate both rows and sections
@@ -105,7 +113,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         println("\(indexPath.row)")
         
+        /*
         let taskDict:Dictionary = taskArrayDict[indexPath.row]
+        */
         let taskStruct:TaskModel = taskArrayStruct[indexPath.row]
         
         // Returns a reusable cell object (located by its identifier)
